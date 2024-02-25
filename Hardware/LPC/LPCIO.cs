@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Text;
 using System.Threading;
 
@@ -260,6 +261,13 @@ namespace OpenHardwareMonitor.Hardware.LPC {
               logicalDeviceNumber = WINBOND_NUVOTON_HARDWARE_MONITOR_LDN;
               break;
           } break;
+        case 0xD8:
+          switch (revision) {
+            case 0x02:
+              chip = Chip.NCT6799D;
+              logicalDeviceNumber = WINBOND_NUVOTON_HARDWARE_MONITOR_LDN;
+              break;
+          } break;
       }
       if (chip == Chip.Unknown) {
         if (id != 0 && id != 0xff) {
@@ -287,7 +295,8 @@ namespace OpenHardwareMonitor.Hardware.LPC {
           chip == Chip.NCT6796D ||
           chip == Chip.NCT6796DR ||
           chip == Chip.NCT6797D ||
-          chip == Chip.NCT6798D)) 
+          chip == Chip.NCT6798D ||
+          chip == Chip.NCT6799D)) 
         {
           port.NuvotonDisableIOSpaceLock();
         }
@@ -346,6 +355,7 @@ namespace OpenHardwareMonitor.Hardware.LPC {
           case Chip.NCT6796DR:
           case Chip.NCT6797D:
           case Chip.NCT6798D:
+          case Chip.NCT6799D:
             superIOs.Add(new NCT677X(chip, revision, address, port));
             break;
           case Chip.F71858:
